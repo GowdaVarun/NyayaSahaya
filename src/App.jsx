@@ -83,7 +83,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Initialize Google Generative AI
-  const genAI = new GoogleGenerativeAI('AIzaSyDHIIf9RWCiv28oazCWN3YtPOzdUl187YA'); // Replace 'YOUR_API_KEY' with your actual API key
+  const genAI = new GoogleGenerativeAI('YOUR_API_KEY'); // Replace 'YOUR_API_KEY' with your actual API key
 
   const handleGenerateResponse = async () => {
     try {
