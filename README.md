@@ -1,6 +1,6 @@
 # QuineLaw
 
-A platform that provide AI based legal guidance after breaking a country's law 
+Your trustworthy AI legal buddy for instant, reliable answers to everyday legal queries
 
 
 
