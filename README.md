@@ -1,11 +1,12 @@
-# QuineLaw
+# Nyayasahaya
 
 Your trustworthy AI legal buddy for instant, reliable answers to everyday legal queries
 
 
 
 ## Getting Started 
-![Home](src/assets/legalhub.png)
+![Home](src/assets/nyaya.png)
+![Screenshots](src/assets/website%20img.png)
 
 ### Prerequisites
 
@@ -13,10 +14,8 @@ Your trustworthy AI legal buddy for instant, reliable answers to everyday legal 
 - Google gemini pro api key
 
 
-### Clonning
-
-```bash
-git clone https://github.com/kashhisshh/legalhub.git
+# Cloning 
+Just copy the   
 ```
 
 ### Installation
