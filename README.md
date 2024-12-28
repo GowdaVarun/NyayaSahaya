@@ -6,7 +6,7 @@ Your trustworthy AI legal buddy for instant, reliable answers to everyday legal 
 
 ## Getting Started 
 ![Home](src/assets/nyaya.png)
-![Screenshots](src/assets/website%20img.png)
+![Screenshots](src/assets/)
 
 ### Prerequisites
 
