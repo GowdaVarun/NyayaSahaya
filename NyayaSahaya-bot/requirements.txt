@@ -1,0 +1,17 @@
+langchain
+pypdf
+transformers
+sentence-transformers
+accelerate
+faiss-cpu
+streamlit
+langchain-fireworks
+einops
+langchain-together
+ray
+unstructured
+htbuilder
+python-dotenv
+together
+langchain_community
+langchain-huggingface
