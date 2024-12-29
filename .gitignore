@@ -1,1 +1,10 @@
+.venv
 /node_modules
+/legal_document_generator/__pycache__
+/legal_document_generator/venv
+/legal_document_generator/.gitignore
+
+/NyayaSahaya-bot/__pycache__
+/NyayaSahaya-bot/.env
+/NyayaSahaya/venv
+/NyayaSahaya/.gitignore

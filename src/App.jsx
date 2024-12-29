@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import DocSummariser from './components/DocSummariser';
 import AboutUs from './components/AboutUs';
+import Chatbot from './components/Chatbot';
+
 const Home = () => (
   <div>
     <h2>Welcome to Nyayasahaya</h2>
@@ -18,30 +20,17 @@ const NotFound = () => (
   </div>
 );
 
-const NyayasahayaChatbotRedirect = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    window.location.href = "http://localhost:8000/chatbot-ui";
-  }, [navigate]);
-
+const DocGenerator = () => {
   return (
     <div>
-      <h2>Redirecting to Nyayasahaya Chatbot...</h2>
-    </div>
-  );
-};
-
-const DocGeneratorRedirect = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    window.location.href = "http://localhost:8502/doc-generator-ui";
-  }, [navigate]);
-
-  return (
-    <div>
-      <h2>Redirecting to DocGenerator...</h2>
+      <h2>DocGenerator</h2>
+      <iframe
+        src="http://localhost:8501"
+        width="100%"
+        height="800px"
+        style={{ border: 'none' }}
+        title="DocGenerator"
+      ></iframe>
     </div>
   );
 };
@@ -63,7 +52,7 @@ const App = () => {
             <ul>
               <li><Link to="/" className="nav-link">Home</Link></li>
               <li><Link to="/doc-generator" className="nav-link">DocGenerator</Link></li>
-              <li><Link to="/chatbot" className="nav-link">Nyayasahaya Chatbot</Link></li>
+              <li><Link to="/Chatbot" className="nav-link">Nyayasahaya Chatbot</Link></li>
               <li><Link to="/doc-summariser" className="nav-link">DocSummariser</Link></li>
               <li><Link to="/about" className="nav-link">About Us</Link></li>
             </ul>
@@ -72,8 +61,8 @@ const App = () => {
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/doc-generator" element={<DocGeneratorRedirect />} />
-            <Route path="/chatbot" element={<NyayasahayaChatbotRedirect />} />
+            <Route path="/doc-generator" element={<DocGenerator />} />
+            <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/doc-summariser" element={<DocSummariser />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="*" element={<NotFound />} />

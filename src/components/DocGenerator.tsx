@@ -1,1 +1,1 @@
-// This file is no longer needed and can be deleted.
+// This file can be deleted as it is no longer needed.
