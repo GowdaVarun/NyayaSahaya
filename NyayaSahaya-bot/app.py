@@ -26,7 +26,11 @@ app.add_middleware(
 
 # Load embeddings and database
 embeddings = HuggingFaceEmbeddings(model_name="law-ai/InLegalBERT")
-db = FAISS.load_local("ipc_embed_db", embeddings, allow_dangerous_deserialization=True)
+try:
+    db = FAISS.load_local("ipc_embed_db", embeddings, allow_dangerous_deserialization=True)
+    print("FAISS database loaded successfully!")
+except Exception as e:
+    print("Error loading FAISS database:", e)
 db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
 # Define the prompt template

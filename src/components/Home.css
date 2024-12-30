@@ -1,0 +1,171 @@
+.home-container {
+  padding: 2rem;
+  background: #f8fafc;
+  position: relative;
+}
+
+.hero-section {
+  text-align: center;
+  padding: 5rem 2rem;
+  margin: 2rem auto;
+  max-width: 1400px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  border-radius: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hero-section::before {
+  position: absolute;
+  font-size: 40rem;
+  opacity: 0.03;
+  top: -50%;
+  right: -10%;
+  transform: rotate(15deg);
+  font-family: serif;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  color: #e2e8f0;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  position: relative;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-text {
+  font-size: 1.5rem;
+  color: #94a3b8;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.features-section {
+  padding: 4rem 0;
+  position: relative;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 0;
+  background: #3b82f6;
+  transition: height 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover::before {
+  height: 100%;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
+  display: inline-block;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.feature-card p {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.faq-section {
+  background: #f1f5f9;
+  padding: 4rem 2rem;
+  margin-top: 4rem;
+}
+
+.faq-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.faq-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.faq-card:hover {
+  transform: scale(1.02);
+}
+
+.faq-card h3 {
+  color: #1e293b;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.faq-card h3::before {
+  content: "Q:";
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.faq-card p {
+  color: #64748b;
+  line-height: 1.6;
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 1.5rem;
+  }
+  
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .faq-section {
+    clip-path: none;
+  }
+}

@@ -2,15 +2,11 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import DocSummariser from './components/DocSummariser';
-import AboutUs from './components/AboutUs';
-import Chatbot from './components/Chatbot';
+import AboutUs from './components/AboutUs/AboutUs';
+import Chatbot from './components/Chatbot/Chatbot';
+import Home from './components/Home';
+import ParticlesComponent from './components/particles/particles';
 
-const Home = () => (
-  <div>
-    <h2>Welcome to Nyayasahaya</h2>
-    <p>Select a service from the navigation menu.</p>
-  </div>
-);
 
 const NotFound = () => (
   <div>
@@ -27,7 +23,7 @@ const DocGenerator = () => {
       <iframe
         src="http://localhost:8501"
         width="100%"
-        height="800px"
+        height="675px"
         style={{ border: 'none' }}
         title="DocGenerator"
       ></iframe>
@@ -46,6 +42,7 @@ const App = () => {
   return (
     <Router>
       <div>
+        <ParticlesComponent />
         <div className="navbar">
           <h1>Nyaya<span style={{ color: 'blue' }}>Sahaya</span></h1>
           <nav>
