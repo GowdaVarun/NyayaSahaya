@@ -44,7 +44,7 @@ const App = () => {
       <div>
         <ParticlesComponent />
         <div className="navbar">
-          <h1>Nyaya<span style={{ color: 'blue' }}>Sahaya</span></h1>
+          <h1><Link to="/" className="home">Nyaya<span style={{ color: 'blue' }}>Sahaya</span></Link></h1>
           <nav>
             <ul>
               <li><Link to="/" className="nav-link">Home</Link></li>
