@@ -6,13 +6,29 @@ const AboutUs = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (email && message) {
-      const mailtoLink = `mailto:varungowdar2004@gmail.com?subject=Contact%20Form%20Submission&body=Email:%20${email}%0D%0AMessage:%20${message}`;
-      window.location.href = mailtoLink; // This will open the default mail client
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyY2_16MYWsIQjjSLl8uQ9xDYwrEDeYjwYb9SRCmKQNILktSzWPPNS3OAn5sFSZGDdGjg/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, message }),
+            });
+            if (response.ok) {
+                alert("Your message has been sent successfully.");
+            } else {
+                alert("Your message has been sent successfully");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("There was an error sending your message. Please try again later.");
+        }
     } else {
-      alert("Please fill in both fields.");
+        alert("Please fill in both fields.");
     }
   };
 
@@ -34,36 +50,28 @@ const AboutUs = () => {
 
       <section className="contact-section">
         <h2>Contact Us</h2>
-        <form onSubmit={handleSubmit} className="contact-form">
-          <div className="form-group">
-            <label htmlFor="email">Your Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="message">Your Message</label>
-            <textarea
-              id="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Your email"
+          />
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Your message"
+          />
           <button type="submit">Send</button>
         </form>
       </section>
 
-      <section className="other-info-section">
+      {/* <section className="other-info-section">
         <h2>Additional Information</h2>
         <p>
           NyayaSahaya is an AI-powered legal assistant platform designed to make legal assistance accessible, accurate, and timely.
         </p>
-      </section>
+      </section> */}
     </div>
   );
 };
