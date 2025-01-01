@@ -366,7 +366,6 @@ def main():
         input_data["assets"] = st.text_area("Assets Details")
         input_data["beneficiary_name"] = st.text_input("Beneficiary's Name")
         input_data["execution_date"] = st.date_input("Date of Will").strftime("%d-%m-%Y")
-
         
     elif document_type == "Power of Attorney":
         input_data["executant_name"] = st.text_input("Testator's Name")
