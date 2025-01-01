@@ -1,4 +1,4 @@
-"""
+
 SALE DEED
 (General)
 This deed of sale is executed on {day} day of {month} month of
@@ -168,4 +168,4 @@ details of the survey number, acre, guntas, revenue assessment and boundaries of
 with reference to the revenue records should be furnished. If the property purchased is a Flat /
 Apartment details of the property on which the Flat / Apartment is constructed, flat number, floor
 number, name of the apartment etc., full details of the property so as to identify shall be
-furnished.]"""
+furnished.]
