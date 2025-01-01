@@ -31,10 +31,11 @@ try:
     print("FAISS database loaded successfully!")
 except Exception as e:
     print("Error loading FAISS database:", e)
+
 db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
 # Define the prompt template
-prompt_template = """
+legal_prompt_template = """
 You are a legal chatbot specializing in Indian law.
 CONTEXT: {context}
 CHAT HISTORY: {chat_history}
@@ -64,7 +65,7 @@ Both: [Details on when both may apply]
 
 ANSWER:
 """
-prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question", "chat_history"])
+legal_prompt = PromptTemplate(template=legal_prompt_template, input_variables=["context", "question", "chat_history"])
 
 # Initialize memory to handle the conversation context
 memory = ConversationBufferWindowMemory(k=2, memory_key="chat_history", return_messages=True)
@@ -80,8 +81,33 @@ qa = ConversationalRetrievalChain.from_llm(
     llm=llm,
     retriever=db_retriever,
     memory=memory,
-    combine_docs_chain_kwargs={"prompt": prompt},
+    combine_docs_chain_kwargs={"prompt": legal_prompt},
 )
+
+# Define general responses for casual interactions
+def handle_general_responses(question):
+    greetings = ["hi", "hello", "hey", "good morning", "good evening", "howdy", "hola"]
+    casual_questions = {
+        "how are you": "I'm just a chatbot, but I'm here to help you!",
+        "what can you do": "I can assist with Indian legal queries and provide helpful information. Ask me anything!",
+        "who are you": "I am NyayaSahaya, your legal assistant specializing in Indian law.",
+        "what should I do": "Please provide more details about your situation so I can assist you better.",
+        "how can you help": "I can provide guidance on Indian legal matters. Feel free to ask me anything related to the law!",
+        "tell me a joke": "I may not be a comedian, but here’s a legal one: Why don’t lawyers play hide and seek? Because good lawyers never hide and bad lawyers never seek!",
+        "goodbye": "Goodbye! Feel free to reach out if you have more questions. Take care!",
+        "who created you" : "I was created by the NyayaSahaya team consisting of Apurva Sankol , Jason Alva , Maheshkumar, Sumadhva Krishna, Varun Gowda .",
+    }
+
+    question_lower = question.lower()
+
+    if any(greet in question_lower for greet in greetings):
+        return "Hello! How can I assist you today?"
+
+    for key, response in casual_questions.items():
+        if key in question_lower:
+            return response
+
+    return None
 
 @app.post("/api/chat")
 async def chat(request: Request):
@@ -91,10 +117,15 @@ async def chat(request: Request):
         question = data.get("question")
         if not question:
             return JSONResponse({"error": "Question is required"}, status_code=400)
-        
+
+        # Handle general responses
+        general_response = handle_general_responses(question)
+        if general_response:
+            return {"answer": general_response}
+
         # Use the conversational chain to get the response
         result = qa.invoke({"question": question})
-        answer = result.get("answer", "I could not process your query.").strip()
+        answer = result.get("answer", "I could not process your query. Please try rephrasing.").strip()
         return {"answer": answer}
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
