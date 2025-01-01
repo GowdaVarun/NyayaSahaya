@@ -21,12 +21,10 @@ and testament.
        {executor3_address}, aged about {executor3_age} years,  
        {executor3_religion} by religion, occupation {executor3_occupation}.
 
-3. My family consists of {family_members}.
+3. My family consists of {family_details}.
 
 4. My property consists of:  
-   (a) {property1}  
-   (b) {property2}  
-   (c) {property3}, etc.
+   {assets}.
 
 5. I bequeath all my property, in whatever form existing at the time  
    of my death, to the said executor and trustees to hold the same on  
@@ -43,9 +41,9 @@ and testament.
 
 7. Upon my wife's death, or if she predeceases me, upon my death, all  
    my estate will belong equally to my children:  
-   (a) {child1_name}  
-   (b) {child2_name}  
-   (c) {child3_name}.  
+
+
+
    The trustees shall transfer the estate to them by executing proper  
    documents.
 
@@ -62,7 +60,7 @@ and testament.
     full understanding.  
 
 In witness whereof, I have put my signature hereunder in the presence  
-of witnesses on this {will_day} day of {will_month}, {will_year}.
+of witnesses .
 
 Signed by the within-named testator,  
 Sri. {testator_name}, in the presence of witnesses, who at his request  

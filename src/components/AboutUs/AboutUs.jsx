@@ -37,12 +37,16 @@ const AboutUs = () => {
       <section className="team-section">
         <h2>Meet Our Team</h2>
         <div className="team-grid">
-          {/* Replace with your actual team members' details */}
-          {["Sumadhva Krishna", "Varun Gowda", "Apurva Sankol", "Jason Rohith", "Maheshkumar"].map((name, index) => (
-            <div key={index} className="team-member-card">
-              <div className="team-member-avatar">{name[0]}</div> {/* Avatar with initials */}
-              <h3>{name}</h3>
-              {/* <p>{`${name} is a dedicated member of our legal AI development team.`}</p> */}
+          {[
+            { name: "Sumadhva Krishna", github: "https://github.com/InatanayaXSk/" },
+            { name: "Varun Gowda", github: "https://github.com/GowdaVarun" },
+            { name: "Apurva Sankol", github: "https://github.com/Apps-1-2-3" },
+            { name: "Jason Rohith", github: "https://github.com/JasonAlva" },
+            { name: "Maheshkumar", github: "https://github.com/Anonymous-2004" }
+          ].map((member, index) => (
+            <div key={index} className="team-member-card" onClick={() => window.open(member.github, "_blank")}>
+              <div className="team-member-avatar">{member.name[0]}</div>
+              <h3>{member.name}</h3>
             </div>
           ))}
         </div>
@@ -65,13 +69,6 @@ const AboutUs = () => {
           <button type="submit">Send</button>
         </form>
       </section>
-
-      {/* <section className="other-info-section">
-        <h2>Additional Information</h2>
-        <p>
-          NyayaSahaya is an AI-powered legal assistant platform designed to make legal assistance accessible, accurate, and timely.
-        </p>
-      </section> */}
     </div>
   );
 };

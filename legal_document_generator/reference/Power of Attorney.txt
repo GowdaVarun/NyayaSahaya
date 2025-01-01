@@ -47,6 +47,7 @@ Bounded by:-
     On the West : {boundary_west}  
     On the South : {boundary_south}  
     On the North : {boundary_north}  
+    
 
 Stamp duty paid as per Article 41(f) of the Schedule to the Karnataka Stamp Act,  
 1957.  
@@ -56,7 +57,9 @@ power of attorney on this {execution_day} day of {execution_month} {execution_ye
 
 WITNESS:  
 {witness_1}  
-{witness_2}  
+Signature:_______________________________
+{witness_2}
+Signature:_______________________________  
 
 EXECUTANT  
 
