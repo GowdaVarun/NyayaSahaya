@@ -94,8 +94,8 @@ def handle_general_responses(question):
         "what should I do": "Please provide more details about your situation so I can assist you better.",
         "how can you help": "I can provide guidance on Indian legal matters. Feel free to ask me anything related to the law!",
         "tell me a joke": "I may not be a comedian, but here’s a legal one: Why don’t lawyers play hide and seek? Because good lawyers never hide and bad lawyers never seek!",
-        "goodbye": "Goodbye! Feel free to reach out if you have more questions. Take care!",
-        "who created you" : "I was created by the NyayaSahaya team consisting of Apurva Sankol , Jason Alva , Maheshkumar, Sumadhva Krishna, Varun Gowda .",
+        "goodbye": "Goodbye! Feel free to reach out if you have more questions. Take care!!",
+        "who created you" : "I was created by the NyayaSahaya team consisting of Apurva Sankol , Jason Alva, Maheshkumar, Sumadhva Krishna, Varun Gowda .",
     }
 
     question_lower = question.lower()
