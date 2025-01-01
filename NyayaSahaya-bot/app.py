@@ -9,22 +9,20 @@ from langchain_together import Together
 from langchain.memory import ConversationBufferWindowMemory
 import os
 from dotenv import load_dotenv
+import re
 
-# Load environment variables
 load_dotenv()
 
 app = FastAPI()
 
-# Enable CORS to handle OPTIONS requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins; restrict in production
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
-    allow_credentials=True,  # Support cookies if needed
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
 )
 
-# Load embeddings and database
 embeddings = HuggingFaceEmbeddings(model_name="law-ai/InLegalBERT")
 try:
     db = FAISS.load_local("ipc_embed_db", embeddings, allow_dangerous_deserialization=True)
@@ -34,49 +32,54 @@ except Exception as e:
 
 db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
-# Define the prompt template
 legal_prompt_template = """
-You are a legal chatbot specializing in Indian law.
+You are NyayaSahaya, a specialized legal assistant for Indian law. Maintain a professional yet approachable tone.
+
 CONTEXT: {context}
 CHAT HISTORY: {chat_history}
 QUESTION: {question}
-INSTRUCTIONS:
-- Provide a structured response in the following format:
 
-Response Format
+If the query is not legal in nature, respond naturally without the formal structure.
+
+For legal queries, provide a structured response as follows:
+
 1. Applicable Law and Section:
-Law: [Name of the law]
-Relevant Sections:
-[Section number]: [Brief description of the section]
-[Section number]: [Brief description of the section]
-2. Legal Consequences:
-Imprisonment: [Maximum duration of imprisonment]
-Fine: [Maximum fine amount]
-Both: [Details on when both may apply]
-3. Steps to Take if Accused:
-[Step 1]: [Brief description of what to do, e.g., collect evidence, seek legal help, etc.]
-[Step 2]: [Brief description of the next step, e.g., review allegations, negotiate, etc.]
-[Step 3]: [Additional steps if needed]
-4. Additional Support:
-[Contact relevant organization or authority for free or additional help]
-[Mention alternative dispute resolution methods, if applicable]
-5. Key Reminder:
-[Include a general reminder, such as consulting a licensed lawyer for personalized advice.]
+- Law: [Name]
+- Sections: [Numbers and descriptions]
 
+2. Legal Consequences:
+- Imprisonment: [Duration]
+- Fine: [Amount]
+- Combined penalties if applicable
+
+3. Steps to Take:
+- Immediate actions
+- Legal remedies
+- Preventive measures
+
+4. Additional Support:
+- Relevant authorities
+- Legal aid options
+- Alternative resolution methods
+
+5. Key Reminder:
+Brief note about consulting licensed professionals
+
+Keep responses clear, factual, and focused on Indian law.
 ANSWER:
 """
+
 legal_prompt = PromptTemplate(template=legal_prompt_template, input_variables=["context", "question", "chat_history"])
 
-# Initialize memory to handle the conversation context
-memory = ConversationBufferWindowMemory(k=2, memory_key="chat_history", return_messages=True)
+memory = ConversationBufferWindowMemory(k=3, memory_key="chat_history", return_messages=True)
 
-# Initialize the conversational retrieval chain
 llm = Together(
     model="mistralai/Mixtral-8x22B-Instruct-v0.1",
     temperature=0.5,
     max_tokens=1024,
     together_api_key=os.getenv("TOGETHER_API_KEY"),
 )
+
 qa = ConversationalRetrievalChain.from_llm(
     llm=llm,
     retriever=db_retriever,
@@ -84,48 +87,89 @@ qa = ConversationalRetrievalChain.from_llm(
     combine_docs_chain_kwargs={"prompt": legal_prompt},
 )
 
-# Define general responses for casual interactions
+def is_legal_query(text):
+    legal_keywords = {
+        'general': ['law', 'legal', 'court', 'rights', 'case', 'lawyer', 'advocate'],
+        'criminal': ['ipc', 'crpc', 'crime', 'arrest', 'bail', 'police', 'criminal'],
+        'civil': ['contract', 'property', 'marriage', 'divorce', 'inheritance'],
+        'procedural': ['petition', 'filing', 'evidence', 'witness', 'complaint'],
+    }
+    
+    text_lower = text.lower()
+    return any(keyword in text_lower for keywords in legal_keywords.values() for keyword in keywords)
+
 def handle_general_responses(question):
-    greetings = ["hi", "hello", "hey", "good morning", "good evening", "howdy", "hola"]
-    casual_questions = {
-        "how are you": "I'm just a chatbot, but I'm here to help you!",
-        "what can you do": "I can assist with Indian legal queries and provide helpful information. Ask me anything!",
-        "who are you": "I am NyayaSahaya, your legal assistant specializing in Indian law.",
-        "what should I do": "Please provide more details about your situation so I can assist you better.",
-        "how can you help": "I can provide guidance on Indian legal matters. Feel free to ask me anything related to the law!",
-        "tell me a joke": "I may not be a comedian, but here’s a legal one: Why don’t lawyers play hide and seek? Because good lawyers never hide and bad lawyers never seek!",
-        "goodbye": "Goodbye! Feel free to reach out if you have more questions. Take care!!",
-        "who created you" : "I was created by the NyayaSahaya team consisting of Apurva Sankol , Jason Alva, Maheshkumar, Sumadhva Krishna, Varun Gowda .",
+    conversation_patterns = {
+        'greetings': {
+            'patterns': [r'\b(hi|hello|hey|good\s+(?:morning|evening|afternoon)|howdy|hola)\b'],
+            'responses': [
+                "Hello! I'm NyayaSahaya, your legal assistant. How can I help you today?",
+                "Hi there! Need help with any legal matters?",
+                "Hello! How can I assist you with legal guidance today?"
+            ]
+        },
+        'farewells': {
+            'patterns': [r'\b(bye|goodbye|farewell|see\s+you|Thank\s+you|thank\s+you)\b'],
+            'responses': [
+                "Goodbye! Feel free to return for any legal assistance.",
+                "Take care! I'm here 24/7 for your legal questions."
+            ]
+        },
+        'identity': {
+            'patterns': [r'\b(who\s+are\s+you|what\s+are\s+you|tell\s+me\s+about\s+yourself)\b'],
+            'responses': [
+                "I'm NyayaSahaya, an AI legal assistant specializing in Indian law, created by Apurva Sankol, Jason Alva, Maheshkumar, Sumadhva Krishna, and Varun Gowda."
+            ]
+        },
+        'capabilities': {
+            'patterns': [r'\b(what\s+can\s+you\s+do|how\s+can\s+you\s+help|what\s+do\s+you\s+do)\b'],
+            'responses': [
+                "I specialize in Indian law and can help with legal advice, understanding procedures, rights, regulations, and case law. What would you like to know?"
+            ]
+        },
+        'gpt_comparison': {
+            'patterns': [r'\b(better\s+than\s+gpt|compare\s+to\s+gpt|vs\s+gpt|compare\s+with\s+chatgpt|are\s+you\s+better\s+than\s+chatgpt)\b'],
+            'responses': [
+                "I'm NyayaSahaya, specialized in Indian law with a focus on providing structured, accurate legal guidance. Instead of comparing, let me help you with your legal questions to demonstrate my capabilities."
+            ]
+        }
     }
 
     question_lower = question.lower()
-
-    if any(greet in question_lower for greet in greetings):
-        return "Hello! How can I assist you today?"
-
-    for key, response in casual_questions.items():
-        if key in question_lower:
-            return response
-
+    
+    for category, data in conversation_patterns.items():
+        for pattern in data['patterns']:
+            if re.search(pattern, question_lower):
+                return data['responses'][0]
+    
+    if not is_legal_query(question):
+        return "I specialize in Indian legal matters. Could you please ask me a law-related question?"
+    
     return None
 
 @app.post("/api/chat")
 async def chat(request: Request):
-    """Handles user queries."""
     try:
         data = await request.json()
-        question = data.get("question")
+        question = data.get("question", "").strip()
+        
         if not question:
             return JSONResponse({"error": "Question is required"}, status_code=400)
 
-        # Handle general responses
         general_response = handle_general_responses(question)
         if general_response:
             return {"answer": general_response}
 
-        # Use the conversational chain to get the response
         result = qa.invoke({"question": question})
-        answer = result.get("answer", "I could not process your query. Please try rephrasing.").strip()
+        answer = result.get("answer", "").strip()
+        
+        if not answer:
+            return {"answer": "I couldn't understand your query. Could you please rephrase it?"}
+            
         return {"answer": answer}
+        
     except Exception as e:
-        return JSONResponse({"error": str(e)}, status_code=500)
+        return JSONResponse(
+            {"error": "An error occurred while processing your request. Please try again."}, 
+            status_code=500
+        )
