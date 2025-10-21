@@ -128,13 +128,19 @@ pip install -r requirements.txt
 ```
 
 4. Set up environment variables:
-- Create a `.env` file
+- Create a `.env` file based on `.env.example`
 - Add required API keys and configurations
 
 5. Start the services:
-- Frontend: `npm start`
-- Backend: `uvicorn app:app --reload`
-- Document Generator: `streamlit run doc_generator.py`
+- Frontend: `npm run dev`
+- Backend: `uvicorn app:app --reload` (from NyayaSahaya-bot directory)
+- Document Generator: `streamlit run doc_generator.py` (from legal_document_generator directory)
+
+## Production Deployment
+
+For production deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+The `prod` branch is configured for automated deployment to GitHub Pages with full functionality.
 
 ## Best Practices
 
