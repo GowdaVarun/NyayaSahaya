@@ -17,12 +17,11 @@ const NotFound = () => (
 );
 
 const DocGenerator = () => {
-  const docGeneratorUrl = import.meta.env.VITE_DOC_GENERATOR_URL || "http://localhost:8501";
   return (
     <div>
       <h2>DocGenerator</h2>
       <iframe
-        src={docGeneratorUrl}
+        src="http://localhost:8501"
         width="100%"
         height="675px"
         style={{ border: 'none' }}

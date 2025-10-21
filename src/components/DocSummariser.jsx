@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 
 const DocSummariser = () => {
-  const docSummariserUrl = import.meta.env.VITE_DOC_SUMMARISER_URL || "https://example.com";
-  
   useEffect(() => {
-    window.location.href = docSummariserUrl;
-  }, [docSummariserUrl]);
+    window.location.href = "https://example.com"; // Redirect to example.com
+  }, []);
 
   return null;
 };
